@@ -1,0 +1,457 @@
+---
+title: "Dissertation Data Analysis"
+author: "Maddy Tattersall"
+format: 
+ html:
+   toc: true
+editor: visual
+execute: 
+  warning: false
+  message: false
+---
+
+## Load packages
+
+```{r}
+library(tidyverse)
+library(here)
+library(readxl)
+library(janitor)
+library(cowplot)
+library(ggfortify)
+library(lme4)
+library(rstatix)
+library(ggplot2)
+library(cowplot)
+```
+
+## Load data
+
+```{r}
+filepath_data <- here("Data collection","Results.xlsx")
+mydata <- read_excel(filepath_data,"Sheet2")
+glimpse(mydata)
+```
+
+## pH Analysis
+
+### Summarise
+
+```{r}
+pH_summary <- mydata |>
+  group_by(Position) |>
+  summarise(n = n(), mean_pH = mean(pH), sd_pH = sd(pH), se_pH = sd(pH)/sqrt(n()))
+pH_summary
+```
+
+### Plot
+
+**Bar Chart**
+
+```{r}
+pH_summary |>
+  ggplot(aes(x = Position, y = mean_pH)) +
+  geom_col() + 
+  geom_errorbar(aes(ymin = mean_pH - se_pH, ymax= mean_pH + se_pH), width = 0.15) +
+  labs(x = "",
+       y = "mean pH") +
+  theme_cowplot()
+```
+
+**Box Plot**
+
+```{r}
+ggplot(mydata, aes(x = Position, y = pH)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.1) +
+  labs(
+    x = "",
+    y = "pH",
+    title = "pH Above and Below Beaver Dam"
+  ) +
+  cowplot::theme_cowplot() +
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 15)
+  )
+```
+
+### Analysis
+
+**Shapiro-Wilk Test**
+
+```{r}
+mydata |>
+  group_by(Position) |>
+  shapiro_test(pH)
+```
+
+**Wilcox-test**
+
+```{r}
+mydata |>
+  wilcox_test(pH~Position)
+```
+
+**Mixed effects analysis**
+
+```{r}
+me_pH <- lmer(pH ~ Position + (1|Month), data = mydata)
+summary(me_pH)
+```
+
+## Temperature Analysis
+
+### Summarise
+
+```{r}
+Temperature_summary <- mydata |>
+  group_by(Position) |>
+  summarise(n = n(), mean_Temperature = mean(Temperature), sd_Temperature = sd(Temperature), se_Temperature = sd(Temperature)/sqrt(n()))
+Temperature_summary
+```
+
+### Plot
+
+**Bar Chart**
+
+```{r}
+Temperature_summary |>
+  ggplot(aes(x = Position, y = mean_Temperature)) +
+  geom_col() + 
+  geom_errorbar(aes(ymin = mean_Temperature - se_Temperature, ymax= mean_Temperature + se_Temperature), width = 0.15) +
+  labs(x = "",
+       y = "mean Temperature") +
+  theme_cowplot()
+```
+
+**Box Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y =Temperature)) +
+  geom_boxplot() + 
+  geom_jitter() +
+  labs(x = "",
+       y = "Temperature (ºC)",
+       title="Temperature Above and Below Beaver Dam") +
+  theme_cowplot() +
+  theme (
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      size = 15, 
+      hjust = 0.5,
+      face = "bold"
+    )
+  )
+  
+```
+
+### Analysis
+
+**Shapiro-Wilk Test**
+
+```{r}
+mydata |>
+  group_by(Position) |>
+  shapiro_test(Temperature)
+```
+
+**Wilcox-test**
+
+```{r}
+mydata |>
+  wilcox_test(Temperature~Position)
+```
+
+## TDS Analysis
+
+### Summarise
+
+```{r}
+TDS_summary <- mydata |>
+  group_by(Position) |>
+  summarise(n = n(), mean_TDS= mean(TDS), sd_TDS = sd(TDS), se_TDS = sd(TDS)/sqrt(n()))
+TDS_summary
+```
+
+### Plot
+
+**Bar Chart**
+
+```{r}
+TDS_summary |>
+  ggplot(aes(x = Position, y = mean_TDS)) +
+  geom_col() + 
+  geom_errorbar(aes(ymin = mean_TDS - se_TDS, ymax= mean_TDS + se_TDS), width = 0.15) +
+  labs(x = "",
+       y = "mean TDS") +
+  theme_cowplot()
+```
+
+**Box Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y =TDS)) +
+  geom_boxplot() + 
+  geom_jitter() +
+  labs(x = "",
+       y = "TDS (ppm)", 
+  title ="TDS Above and Below Beaver Dam") +
+  theme_cowplot() +
+  theme (
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      size = 15, 
+      hjust = 0.5,
+      face = "bold"
+    )
+  )
+```
+
+### Analysis
+
+**Shapiro-Wilk Test**
+
+```{r}
+mydata |>
+  group_by(Position) |>
+  shapiro_test(TDS)
+```
+
+**t-test**
+
+```{r}
+mydata |>
+  t_test(TDS~Position)
+```
+
+## DO Analysis
+
+### Summarise
+
+```{r}
+DO_summary <- mydata |>
+  group_by(Position) |>
+  summarise(n = n(), mean_DO= mean(DO), sd_DO = sd(DO), se_DO = sd(DO)/sqrt(n()))
+DO_summary
+```
+
+### Plot
+
+**Bar Chart**
+
+```{r}
+DO_summary |>
+  ggplot(aes(x = Position, y = mean_DO)) +
+  geom_col() + 
+  geom_errorbar(aes(ymin = mean_DO - se_DO, ymax= mean_DO + se_DO), width = 0.15) +
+  labs(x = "",
+       y = "mean DO") +
+  theme_cowplot()
+```
+
+**Box Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y =DO)) +
+  geom_boxplot() + 
+  geom_jitter() +
+  labs(x = "",
+        y = "Dissolved Oxygen (%)", 
+  title ="Dissolved Oxygen Above and Below Beaver Dam") +
+  theme_cowplot() +
+  theme (
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      size = 15, 
+      hjust = 0.5,
+      face = "bold"
+    )
+  )
+```
+
+### Analysis
+
+**Shapiro-Wilk Test**
+
+```{r}
+mydata |>
+  group_by(Position) |>
+  shapiro_test(DO)
+```
+
+**Wilcox-test**
+
+```{r}
+mydata |>
+  wilcox_test(DO~Position)
+```
+
+## TON Analysis
+
+### Summarise
+
+```{r}
+Nitrates_summary <- mydata |>
+  group_by(Position) |>
+  summarise(n = n(), mean_Nitrates= mean(Nitrates), sd_Nitrates = sd(Nitrates), se_Nitrates = sd(Nitrates)/sqrt(n()))
+Nitrates_summary
+```
+
+### Plot
+
+**Bar Chart**
+
+```{r}
+Nitrates_summary |>
+  ggplot(aes(x = Position, y = mean_Nitrates)) +
+  geom_col() + 
+  geom_errorbar(aes(ymin = mean_Nitrates - se_Nitrates, ymax= mean_Nitrates + se_Nitrates), width = 0.15) +
+  labs(x = "",
+       y = "mean Nitrates") +
+  theme_cowplot()
+```
+
+**Box Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y =Nitrates)) +
+  geom_boxplot() + 
+  geom_jitter() +
+  labs(x = "",
+            y = "TON (mg/l)", 
+  title ="TON Above and Below Beaver Dam") +
+  theme_cowplot() +
+  theme (
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      size = 15, 
+      hjust = 0.5,
+      face = "bold",
+    )
+  )
+```
+
+### Analysis
+
+**Shapiro-Wilk Test**
+
+```{r}
+mydata |>
+  group_by(Position) |>
+  shapiro_test(Nitrates)
+```
+
+**Wilcox-test**
+
+```{r}
+mydata |>
+  wilcox_test(Nitrates~Position)
+```
+
+### Checking for Normality 
+**Change parameter accordingly**
+
+```{r}
+hist(mydata$pH, 
+     main = "Histogram of pH", 
+     xlab = "pH", 
+     col = "lightblue", 
+     border = "black")
+```
+
+## Line graphs  
+**Ensure month order**
+```{r}
+mydata$Month <- factor(mydata$Month, 
+                   levels = c("April", "May", "June", "July", "August", "September"))
+```
+
+**Summarise**
+```{r}
+summary_mydata <- mydata %>%
+  group_by(Month, Position) %>%
+  summarise(
+    pH = mean(pH, na.rm = TRUE),
+    Temperature = mean(Temperature, na.rm = TRUE),
+    TDS = mean(TDS, na.rm = TRUE),
+    DO = mean(DO, na.rm = TRUE),
+    Nitrates = mean(Nitrates, na.rm = TRUE)
+  ) %>%
+  ungroup()
+```
+
+**pH**
+```{r}
+ggplot(summary_mydata, aes(x = Month, y = pH, color = Position, group = Position)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  labs(title = "Average pH Over Months", y = "pH") +
+  theme_minimal()+
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+  )
+```
+
+**TDS**
+```{r}
+ggplot(summary_mydata, aes(x = Month, y = Temperature, color = Position, group = Position)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  labs(title = "Average Temperature Over Months", y = "Temperature (ºC)") +
+  theme_minimal()+
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+  )
+```
+
+**DO**
+```{r}
+ggplot(summary_mydata, aes(x = Month, y = DO, color = Position, group = Position)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  labs(title = "Average DO Over Months", y = "DO (%)") +
+  theme_minimal()+
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+  )
+```
+
+**TDS**
+```{r}
+ggplot(summary_mydata, aes(x = Month, y = TDS, color = Position, group = Position)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  labs(title = "Average TDS Over Months", y = "TDS (ppm)") +
+  theme_minimal()+
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+  )
+```
+
+**Nitrates**
+```{r}
+ggplot(summary_mydata, aes(x = Month, y = Nitrates, color = Position, group = Position)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  labs(title = "Average TON Over Months", y = "TON (mg/l)") +
+  theme_minimal()+
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+  )
+```
+
+
+
+
+ 
+
