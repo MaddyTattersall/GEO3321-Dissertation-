@@ -76,6 +76,82 @@ ggplot(mydata, aes(x = Position, y = pH)) +
   )
 ```
 
+**Violin Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y = pH, fill = Position)) +
+  geom_violin(
+    trim = FALSE,
+    alpha = 0.6
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Below" = "#00BFC4",  # same blue as line graphs
+      "Above" = "red"
+    )
+  ) +
+  labs(
+    x = "",
+    y = "pH",
+    title = "pH Above and Below Beaver Dam"
+  ) +
+  theme_cowplot() +
+  theme(
+    legend.position = "none",  # 👈 removes legend
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 15
+    )
+  )
+```
+
+**Violin with Box Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y = pH)) +
+  
+  geom_violin(
+    aes(fill = Position),
+    trim = FALSE,
+    alpha = 0.6
+  ) +
+  
+  geom_boxplot(
+    width = 0.15,
+    outlier.shape = NA,
+    fill = "white",
+    colour = "black"
+  ) +
+  
+  scale_fill_manual(
+    values = c(
+      "Above" = "red",
+      "Below" = "#00BFC4"
+    )
+  ) +
+  
+  labs(
+    x = "",
+    y = "pH",
+    title = "pH Above and Below Beaver Dam"
+  ) +
+  
+  theme_cowplot() +
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 15
+    ),
+    legend.position = "none"
+  )
+```
+
 ### Analysis
 
 **Shapiro-Wilk Test**
@@ -147,6 +223,82 @@ mydata |>
   
 ```
 
+**Violin Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y = Temperature, fill = Position)) +
+  geom_violin(
+    trim = FALSE,
+    alpha = 0.6
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Below" = "#00BFC4",  # same blue as line graphs
+      "Above" = "red"
+    )
+  ) +
+  labs(
+    x = "",
+    y = "Temperature (ºC)",
+    title = "Temperature Above and Below Beaver Dam"
+  ) +
+  theme_cowplot() +
+  theme(
+    legend.position = "none",  # 👈 removes legend
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 15
+    )
+  )
+```
+
+**Violin with Box Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y = Temperature)) +
+  
+  geom_violin(
+    aes(fill = Position),
+    trim = FALSE,
+    alpha = 0.6
+  ) +
+  
+  geom_boxplot(
+    width = 0.15,
+    outlier.shape = NA,
+    fill = "white",
+    colour = "black"
+  ) +
+  
+  scale_fill_manual(
+    values = c(
+      "Above" = "red",
+      "Below" = "#00BFC4"
+    )
+  ) +
+  
+  labs(
+    x = "",
+    y = "Temperature (ºC)",
+    title = "Temperature Above and Below Beaver Dam"
+  ) +
+  
+  theme_cowplot() +
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 15
+    ),
+    legend.position = "none"
+  )
+```
+
 ### Analysis
 
 **Shapiro-Wilk Test**
@@ -210,6 +362,82 @@ mydata |>
   )
 ```
 
+**Violin Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y = TDS, fill = Position)) +
+  geom_violin(
+    trim = FALSE,
+    alpha = 0.6
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Below" = "#00BFC4",  # same blue as line graphs
+      "Above" = "red"
+    )
+  ) +
+  labs(
+    x = "",
+    y = "TDS (ppm)",
+    title = "TDS Above and Below Beaver Dam"
+  ) +
+  theme_cowplot() +
+  theme(
+    legend.position = "none",  # 👈 removes legend
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 15
+    )
+  )
+```
+
+**Violin with Box Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y = TDS)) +
+  
+  geom_violin(
+    aes(fill = Position),
+    trim = FALSE,
+    alpha = 0.6
+  ) +
+  
+  geom_boxplot(
+    width = 0.15,
+    outlier.shape = NA,
+    fill = "white",
+    colour = "black"
+  ) +
+  
+  scale_fill_manual(
+    values = c(
+      "Above" = "red",
+      "Below" = "#00BFC4"
+    )
+  ) +
+  
+  labs(
+    x = "",
+    y = "TDS (ppm) ",
+    title = "TDS Above and Below Beaver Dam"
+  ) +
+  
+  theme_cowplot() +
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 15
+    ),
+    legend.position = "none"
+  )
+```
+
 ### Analysis
 
 **Shapiro-Wilk Test**
@@ -225,69 +453,6 @@ mydata |>
 ```{r}
 mydata |>
   t_test(TDS~Position)
-```
-
-## DO Analysis
-
-### Summarise
-
-```{r}
-DO_summary <- mydata |>
-  group_by(Position) |>
-  summarise(n = n(), mean_DO= mean(DO), sd_DO = sd(DO), se_DO = sd(DO)/sqrt(n()))
-DO_summary
-```
-
-### Plot
-
-**Bar Chart**
-
-```{r}
-DO_summary |>
-  ggplot(aes(x = Position, y = mean_DO)) +
-  geom_col() + 
-  geom_errorbar(aes(ymin = mean_DO - se_DO, ymax= mean_DO + se_DO), width = 0.15) +
-  labs(x = "",
-       y = "mean DO") +
-  theme_cowplot()
-```
-
-**Box Plot**
-
-```{r}
-mydata |>
-  ggplot(aes(x = Position, y =DO)) +
-  geom_boxplot() + 
-  geom_jitter() +
-  labs(x = "",
-        y = "Dissolved Oxygen (%)", 
-  title ="Dissolved Oxygen Above and Below Beaver Dam") +
-  theme_cowplot() +
-  theme (
-    text = element_text(family = "Times New Roman"),
-    plot.title = element_text(
-      size = 15, 
-      hjust = 0.5,
-      face = "bold"
-    )
-  )
-```
-
-### Analysis
-
-**Shapiro-Wilk Test**
-
-```{r}
-mydata |>
-  group_by(Position) |>
-  shapiro_test(DO)
-```
-
-**Wilcox-test**
-
-```{r}
-mydata |>
-  wilcox_test(DO~Position)
 ```
 
 ## TON Analysis
@@ -336,6 +501,82 @@ mydata |>
   )
 ```
 
+**Violin Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y = Nitrates, fill = Position)) +
+  geom_violin(
+    trim = FALSE,
+    alpha = 0.6
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Below" = "#00BFC4",  # same blue as line graphs
+      "Above" = "red"
+    )
+  ) +
+  labs(
+    x = "",
+    y = "TON (mg/l)",
+    title = "TON Above and Below Beaver Dam"
+  ) +
+  theme_cowplot() +
+  theme(
+    legend.position = "none",  # 👈 removes legend
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 15
+    )
+  )
+```
+
+**Violin with Box Plot**
+
+```{R}
+mydata |>
+  ggplot(aes(x = Position, y = Nitrates)) +
+  
+  geom_violin(
+    aes(fill = Position),
+    trim = FALSE,
+    alpha = 0.6
+  ) +
+  
+  geom_boxplot(
+    width = 0.15,
+    outlier.shape = NA,
+    fill = "white",
+    colour = "black"
+  ) +
+  
+  scale_fill_manual(
+    values = c(
+      "Above" = "red",
+      "Below" = "#00BFC4"
+    )
+  ) +
+  
+  labs(
+    x = "",
+    y = "TON mg/l",
+    title = "TON Above and Below Beaver Dam"
+  ) +
+  
+  theme_cowplot() +
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 15
+    ),
+    legend.position = "none"
+  )
+```
+
 ### Analysis
 
 **Shapiro-Wilk Test**
@@ -353,7 +594,147 @@ mydata |>
   wilcox_test(Nitrates~Position)
 ```
 
-### Checking for Normality 
+## DO Analysis
+
+### Summarise
+
+```{r}
+DO_summary <- mydata |>
+  group_by(Position) |>
+  summarise(n = n(), mean_DO= mean(DO), sd_DO = sd(DO), se_DO = sd(DO)/sqrt(n()))
+DO_summary
+```
+
+### Plot
+
+**Bar Chart**
+
+```{r}
+DO_summary |>
+  ggplot(aes(x = Position, y = mean_DO)) +
+  geom_col() + 
+  geom_errorbar(aes(ymin = mean_DO - se_DO, ymax= mean_DO + se_DO), width = 0.15) +
+  labs(x = "",
+       y = "mean DO") +
+  theme_cowplot()
+```
+
+**Box Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y =DO)) +
+  geom_boxplot() + 
+  geom_jitter() +
+  labs(x = "",
+        y = "Dissolved Oxygen (%)", 
+  title ="Dissolved Oxygen Above and Below Beaver Dam") +
+  theme_cowplot() +
+  theme (
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      size = 15, 
+      hjust = 0.5,
+      face = "bold"
+    )
+  )
+```
+
+**Violin Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y = DO, fill = Position)) +
+  geom_violin(
+    trim = FALSE,
+    alpha = 0.6
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Below" = "#00BFC4",  # same blue as line graphs
+      "Above" = "red"
+    )
+  ) +
+  labs(
+    x = "",
+    y = "DO (%)",
+    title = "DO Above and Below Beaver Dam"
+  ) +
+  theme_cowplot() +
+  theme(
+    legend.position = "none",  # 👈 removes legend
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 15
+    )
+  )
+```
+
+**Violin with Box Plot**
+
+```{r}
+mydata |>
+  ggplot(aes(x = Position, y = DO)) +
+  
+  geom_violin(
+    aes(fill = Position),
+    trim = FALSE,
+    alpha = 0.6
+  ) +
+  
+  geom_boxplot(
+    width = 0.15,
+    outlier.shape = NA,
+    fill = "white",
+    colour = "black"
+  ) +
+  
+  scale_fill_manual(
+    values = c(
+      "Above" = "red",
+      "Below" = "#00BFC4"
+    )
+  ) +
+  
+  labs(
+    x = "",
+    y = "DO (%)",
+    title = "DO Above and Below Beaver Dam"
+  ) +
+  
+  theme_cowplot() +
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 15
+    ),
+    legend.position = "none"
+  )
+```
+
+### Analysis
+
+**Shapiro-Wilk Test**
+
+```{r}
+mydata |>
+  group_by(Position) |>
+  shapiro_test(DO)
+```
+
+**Wilcox-test**
+
+```{r}
+mydata |>
+  wilcox_test(DO~Position)
+```
+
+### Checking for Normality
+
 **Change parameter accordingly**
 
 ```{r}
@@ -364,14 +745,17 @@ hist(mydata$pH,
      border = "black")
 ```
 
-## Line graphs  
+## Line graphs
+
 **Ensure month order**
+
 ```{r}
 mydata$Month <- factor(mydata$Month, 
                    levels = c("April", "May", "June", "July", "August", "September"))
 ```
 
 **Summarise**
+
 ```{r}
 summary_mydata <- mydata %>%
   group_by(Month, Position) %>%
@@ -386,6 +770,7 @@ summary_mydata <- mydata %>%
 ```
 
 **pH**
+
 ```{r}
 ggplot(summary_mydata, aes(x = Month, y = pH, color = Position, group = Position)) +
   geom_line(size = 1.2) +
@@ -399,6 +784,7 @@ ggplot(summary_mydata, aes(x = Month, y = pH, color = Position, group = Position
 ```
 
 **TDS**
+
 ```{r}
 ggplot(summary_mydata, aes(x = Month, y = Temperature, color = Position, group = Position)) +
   geom_line(size = 1.2) +
@@ -412,6 +798,7 @@ ggplot(summary_mydata, aes(x = Month, y = Temperature, color = Position, group =
 ```
 
 **DO**
+
 ```{r}
 ggplot(summary_mydata, aes(x = Month, y = DO, color = Position, group = Position)) +
   geom_line(size = 1.2) +
@@ -425,6 +812,7 @@ ggplot(summary_mydata, aes(x = Month, y = DO, color = Position, group = Position
 ```
 
 **TDS**
+
 ```{r}
 ggplot(summary_mydata, aes(x = Month, y = TDS, color = Position, group = Position)) +
   geom_line(size = 1.2) +
@@ -438,6 +826,7 @@ ggplot(summary_mydata, aes(x = Month, y = TDS, color = Position, group = Positio
 ```
 
 **Nitrates**
+
 ```{r}
 ggplot(summary_mydata, aes(x = Month, y = Nitrates, color = Position, group = Position)) +
   geom_line(size = 1.2) +
@@ -449,9 +838,3 @@ ggplot(summary_mydata, aes(x = Month, y = Nitrates, color = Position, group = Po
     plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
   )
 ```
-
-
-
-
- 
-
