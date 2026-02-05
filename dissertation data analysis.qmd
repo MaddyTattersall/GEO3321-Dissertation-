@@ -783,7 +783,7 @@ ggplot(summary_mydata, aes(x = Month, y = pH, color = Position, group = Position
   )
 ```
 
-**TDS**
+**Temperature**
 
 ```{r}
 ggplot(summary_mydata, aes(x = Month, y = Temperature, color = Position, group = Position)) +
@@ -797,19 +797,6 @@ ggplot(summary_mydata, aes(x = Month, y = Temperature, color = Position, group =
   )
 ```
 
-**DO**
-
-```{r}
-ggplot(summary_mydata, aes(x = Month, y = DO, color = Position, group = Position)) +
-  geom_line(size = 1.2) +
-  geom_point(size = 3) +
-  labs(title = "Average DO Over Months", y = "DO (%)") +
-  theme_minimal()+
-  theme(
-    text = element_text(family = "Times New Roman"),
-    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
-  )
-```
 
 **TDS**
 
@@ -825,13 +812,27 @@ ggplot(summary_mydata, aes(x = Month, y = TDS, color = Position, group = Positio
   )
 ```
 
-**Nitrates**
+**TON**
 
 ```{r}
 ggplot(summary_mydata, aes(x = Month, y = Nitrates, color = Position, group = Position)) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
   labs(title = "Average TON Over Months", y = "TON (mg/l)") +
+  theme_minimal()+
+  theme(
+    text = element_text(family = "Times New Roman"),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+  )
+```
+
+**DO**
+
+```{r}
+ggplot(summary_mydata, aes(x = Month, y = DO, color = Position, group = Position)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  labs(title = "Average DO Over Months", y = "DO (%)") +
   theme_minimal()+
   theme(
     text = element_text(family = "Times New Roman"),
